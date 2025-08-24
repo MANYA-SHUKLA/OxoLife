@@ -4,7 +4,29 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-const products = {
+// Define interfaces for our data structures
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  rentPrice: number;
+  images: string[];
+  description: string;
+  specs: string[];
+}
+
+interface WishlistItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+}
+
+interface Products {
+  [key: string]: Product;
+}
+
+const products: Products = {
   'bed-manual': {
     id: 'bed-manual',
     name: 'Manual Hospital Bed',
@@ -116,34 +138,42 @@ function Navbar() {
   );
 }
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
   const router = useRouter();
-  const product = products[params.id];
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [showWishlistNotification, setShowWishlistNotification] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
+    // Resolve the params promise
+    params.then((resolved) => {
+      setResolvedParams(resolved);
+    });
+  }, [params]);
+
+  useEffect(() => {
     // Check if product is in wishlist on component mount
-    if (product) {
-      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      setIsInWishlist(wishlist.some((item: any) => item.id === product.id));
+    if (resolvedParams && products[resolvedParams.id]) {
+      const wishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      setIsInWishlist(wishlist.some((item: WishlistItem) => item.id === products[resolvedParams.id].id));
     }
-  }, [product]);
+  }, [resolvedParams]);
 
   const toggleWishlist = () => {
-    if (!product) return;
+    if (!resolvedParams || !products[resolvedParams.id]) return;
     
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const product = products[resolvedParams.id];
+    const wishlist: WishlistItem[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
     
     if (isInWishlist) {
       // Remove from wishlist
-      const updatedWishlist = wishlist.filter((item: any) => item.id !== product.id);
+      const updatedWishlist = wishlist.filter((item: WishlistItem) => item.id !== product.id);
       localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
       setIsInWishlist(false);
     } else {
       // Add to wishlist
-      const productToAdd = {
+      const productToAdd: WishlistItem = {
         id: product.id,
         name: product.name,
         price: product.price,
@@ -160,6 +190,17 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       }, 3000);
     }
   };
+
+  // Show loading state while params are being resolved
+  if (!resolvedParams) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-16">
+        <p className="text-center text-[var(--color-primary)] text-xl">Loading...</p>
+      </div>
+    );
+  }
+
+  const product = products[resolvedParams.id];
 
   if (!product) {
     return (

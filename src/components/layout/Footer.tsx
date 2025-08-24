@@ -232,7 +232,7 @@ export default function Footer() {
             </div>
             <h3 className="text-base font-medium text-gray-900 text-center mb-1">Subscribed Successfully!</h3>
             <p className="text-xs text-gray-500 text-center">
-              Thank you for subscribing to our newsletter. You'll receive our latest updates soon.
+              Thank you for subscribing to our newsletter. You&apos;ll receive our latest updates soon.
             </p>
             <button
               onClick={() => setShowPopup(false)}

@@ -10,12 +10,18 @@ import {
   FaLaptopMedical,
   FaStethoscope,
   FaUserMd,
-  FaStar,
-  FaShieldAlt
+  FaStar
 } from "react-icons/fa";
 import HeroSection from "@/components/HeroSection";
-import Footer from "@/components/layout/Footer";
 import { useState } from "react";
+
+// Define interface for FallbackImage props
+interface FallbackImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+  fallbackSrc?: string;
+}
 
 // Data arrays moved outside the component
 const FEATURES = [
@@ -89,7 +95,7 @@ const PRODUCTS = [
   {
     name: "CPAP Machines",
     description: "Advanced CPAP devices for sleep apnea treatment",
-    image: "hhttps://plus.unsplash.com/premium_photo-1664476553552-84de4520b37c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y3BhcCUyMG1hY2hpbmVzJTIwaG9zcGl0YWx8ZW58MHx8MHx8fDA%3D",
+    image: "https://plus.unsplash.com/premium_photo-1664476553552-84de4520b37c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y3BhcCUyMG1hY2hpbmVzJTIwaG9zcGl0YWx8ZW58MHx8MHx8fDA%3D",
     price: "From ₹22,000",
     link: "/products",
     featured: false
@@ -152,7 +158,12 @@ const TESTIMONIALS = [
 ];
 
 // Fallback image component to handle broken images
-const FallbackImage = ({ src, alt, className, fallbackSrc = "https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" }) => {
+const FallbackImage = ({ 
+  src, 
+  alt, 
+  className, 
+  fallbackSrc = "https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" 
+}: FallbackImageProps) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (
@@ -359,7 +370,7 @@ export default function Home() {
                     <FaStar key={i} className="text-[#F99A2F] text-sm" />
                   ))}
                 </div>
-                <p className="text-gray-700 italic">"{testimonial.content}"</p>
+                <p className="text-gray-700 italic">`{testimonial.content}`</p>
               </div>
             ))}
           </div>
@@ -430,8 +441,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      
 
       <style jsx>{`
         @keyframes float {

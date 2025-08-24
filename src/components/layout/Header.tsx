@@ -59,7 +59,6 @@ export default function Header() {
   const navItems = [
     { name: "Home", href: "/", icon: <FaHome className="text-lg" /> },
     { name: "Products", href: "/products", icon: <FaBoxOpen className="text-lg" /> },
-    { name: "Compare", href: "/compare", icon: <FaBalanceScale className="text-lg" /> },
     { name: "Testimonials", href: "/testimonials", icon: <FaComments className="text-lg" /> },
     { name: "About", href: "/about", icon: <FaInfoCircle className="text-lg" /> },
     { name: "Contact", href: "/contact", icon: <FaPhoneAlt className="text-lg" /> },

@@ -82,7 +82,7 @@ export default function AboutPage() {
             About <span className="text-blue-200">Oxygen Times</span>
           </h1>
           <p className="text-center text-blue-100 max-w-2xl mx-auto text-sm sm:text-base md:text-lg mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-            India's Premier Home Healthcare Equipment Provider
+            India&apos;s Premier Home Healthcare Equipment Provider
           </p>
 
           <div className="flex flex-col lg:flex-row items-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 max-w-6xl mx-auto">
@@ -136,11 +136,11 @@ export default function AboutPage() {
             {/* Content */}
             <div className="w-full lg:w-3/5 text-gray-800 space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-7 xl:space-y-8 text-sm sm:text-base md:text-lg leading-relaxed">
               <p className={`first-letter:text-blue-600 first-letter:text-3xl sm:first-letter:text-4xl md:first-letter:text-5xl first-letter:font-bold first-letter:mr-2 sm:first-letter:mr-3 first-letter:float-left transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
-                Oxygen Times is India's trusted partner for home healthcare solutions, dedicated to making advanced medical equipment accessible to everyone. Founded in 2015, we've grown to become a leading provider of hospital beds, oxygen concentrators, wheelchairs, and other essential medical devices across the nation.
+                Oxygen Times is India&apos;s trusted partner for home healthcare solutions, dedicated to making advanced medical equipment accessible to everyone. Founded in 2015, we&apos;ve grown to become a leading provider of hospital beds, oxygen concentrators, wheelchairs, and other essential medical devices across the nation.
               </p>
 
               <p className={`transition-all duration-1000 delay-200 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
-                Our mission is to bridge the gap between hospital care and home recovery by providing reliable, high-quality medical equipment through both purchase and flexible rental options. We understand the challenges faced by patients and caregivers, which is why we've designed our services to be convenient, affordable, and supported by knowledgeable healthcare professionals.
+                Our mission is to bridge the gap between hospital care and home recovery by providing reliable, high-quality medical equipment through both purchase and flexible rental options. We understand the challenges faced by patients and caregivers, which is why we&apos;ve designed our services to be convenient, affordable, and supported by knowledgeable healthcare professionals.
               </p>
 
               <p className={`transition-all duration-1000 delay-400 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>

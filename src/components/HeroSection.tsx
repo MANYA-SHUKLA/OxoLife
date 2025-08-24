@@ -183,7 +183,7 @@ export default function HeroSection() {
             
             {/* Description with staggered animation */}
             <p className="mb-8 md:mb-10 text-lg sm:text-xl max-w-xl drop-shadow-md opacity-0 animate-fade-in-up [animation-delay:0.3s] [animation-fill-mode:forwards]">
-              India's most trusted platform to compare, buy, or rent home healthcare equipment and medical devices. Reliable products with nationwide delivery.
+              India&apos;s most trusted platform to compare, buy, or rent home healthcare equipment and medical devices. Reliable products with nationwide delivery.
             </p>
 
             {/* CTA buttons with staggered animation */}
@@ -193,12 +193,6 @@ export default function HeroSection() {
                 className="bg-[#F99A2F] hover:bg-white text-black font-semibold px-6 py-3 md:px-10 md:py-4 rounded-full shadow-lg transition-all transform hover:scale-105 hover:shadow-xl opacity-0 animate-fade-in-up [animation-delay:0.5s] [animation-fill-mode:forwards] text-center flex items-center justify-center"
               >
                 Shop Products <FaArrowRight className="ml-2" />
-              </Link>
-              <Link
-                href="/compare"
-                className="border-2 border-white hover:bg-white hover:text-[#155AA2] text-white font-semibold px-6 py-3 md:px-10 md:py-4 rounded-full transition-all transform hover:scale-105 opacity-0 animate-fade-in-up [animation-delay:0.7s] [animation-fill-mode:forwards] text-center"
-              >
-                Compare Now
               </Link>
             </div>
 

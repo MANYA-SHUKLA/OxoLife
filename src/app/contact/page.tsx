@@ -95,7 +95,7 @@ export default function ContactPage() {
                 Get in <span className="text-blue-200">Touch</span>
               </h1>
               <p className="text-blue-100 text-lg md:text-xl mb-8 md:mb-10 animate-on-load">
-                Have questions about our medical equipment? We're here to help and answer any questions you might have.
+                Have questions about our medical equipment? We&apos;re here to help and answer any questions you might have.
               </p>
 
               <div className="space-y-5 md:space-y-6">
@@ -172,7 +172,7 @@ export default function ContactPage() {
 
             <div className="animate-on-load">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Send us a Message</h2>
-              <p className="text-gray-600 mb-6">Fill out the form below and we'll get back to you as soon as possible.</p>
+              <p className="text-gray-600 mb-6">Fill out the form below and we&apos;ll get back to you as soon as possible.</p>
               
               <form onSubmit={handleSubmit} noValidate className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -283,7 +283,7 @@ export default function ContactPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span>We'll help you find the right medical equipment for your needs</span>
+                  <span>We&apos;ll help you find the right medical equipment for your needs</span>
                 </li>
               </ul>
             </div>
