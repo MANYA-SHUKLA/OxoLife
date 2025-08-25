@@ -120,10 +120,10 @@ function Navbar() {
               Products
             </button>
             <button 
-              onClick={() => router.push('/compare')}
+              onClick={() => router.push('/about')}
               className="text-gray-700 hover:text-[var(--color-primary)] transition-colors"
             >
-              Compare
+              About
             </button>
             <button 
               onClick={() => router.push('/contact')}
