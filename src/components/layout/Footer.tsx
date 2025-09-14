@@ -25,7 +25,7 @@ const Footer = () => {
   };
 
   const validateForm = () => {
-    let newErrors = {};
+    const newErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.match(/^\S+@\S+\.\S+$/))
       newErrors.email = "Enter a valid email";
