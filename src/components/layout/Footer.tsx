@@ -1,31 +1,46 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 const Footer = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     message: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
-  const [apiError, setApiError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [apiError, setApiError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     
-    if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
+    if (errors[name as keyof FormErrors]) {
+      const newErrors = { ...errors };
+      delete newErrors[name as keyof FormErrors];
+      setErrors(newErrors);
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.match(/^\S+@\S+\.\S+$/))
       newErrors.email = "Enter a valid email";
@@ -35,7 +50,7 @@ const Footer = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setApiError("");
     setSuccessMessage("");
@@ -245,7 +260,7 @@ const Footer = () => {
                   <textarea
                     id="message"
                     name="message"
-                    rows="4"
+                    rows={4}
                     value={formData.message}
                     onChange={handleChange}
                     className={`w-full px-4 py-2.5 rounded-lg border ${errors.message ? "border-red-500 ring-1 ring-red-500" : "border-gray-300 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
@@ -330,7 +345,7 @@ const Footer = () => {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14046.92945687822!2d77.1653805!3d28.546195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1dec15d2acfb%3A0x44144b13d050b48e!2sDAMODAR%20HOSTEL%20BLOCK-A%2C%20JAWAHARLAL%20NEHRU%20UNIVERSITY-2%2C%20Old%20SPS%20Rd%2C%20Delhi%2C%20New%20Delhi%2C%20Delhi%20110048%2C%20India!5e0!3m2!1sen!2sus!4v1712345678901!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
-                allowFullScreen=""
+                allowFullScreen={true}
                 loading="lazy"
                 className="rounded-xl"
               ></iframe>
