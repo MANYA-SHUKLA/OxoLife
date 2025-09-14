@@ -14,13 +14,11 @@ export default function Footer() {
     
     setIsSubmitting(true);
     
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setShowPopup(true);
       setEmail('');
       
-      // Auto hide popup after 3 seconds
       setTimeout(() => setShowPopup(false), 3000);
     }, 1000);
   };
@@ -28,12 +26,11 @@ export default function Footer() {
   return (
     <>
       <footer className="bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900 text-white relative overflow-hidden pt-12 pb-8">
-        {/* Background pattern */}
+     
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CiAgPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMyIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+')]"></div>
         </div>
 
-        {/* Animated background elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
           <div className="absolute top-10 left-1/4 w-20 h-20 bg-blue-500 rounded-full filter blur-xl animate-pulse-slow"></div>
           <div className="absolute bottom-20 right-1/4 w-16 h-16 bg-blue-400 rounded-full filter blur-xl animate-ping-slow"></div>
@@ -57,7 +54,6 @@ export default function Footer() {
               Trusted supplier of home healthcare equipment in India. Compare, buy, or rent products with confidence.
             </p>
             
-            {/* Social Media Links */}
             <div className="flex space-x-3 pt-2">
               {[
                 { name: 'Facebook', icon: (
@@ -95,7 +91,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <nav aria-label="Footer Navigation" className="flex flex-col space-y-3">
             <h3 className="font-semibold text-white text-lg border-b border-blue-600 pb-2">Quick Links</h3>
             {['Home', 'Products', 'Compare', 'Testimonials', 'About', 'Contact'].map((item) => (
@@ -109,7 +104,6 @@ export default function Footer() {
             ))}
           </nav>
 
-          {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="font-semibold text-white text-lg border-b border-blue-600 pb-2">Contact Us</h3>
             
@@ -119,8 +113,8 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                 </svg>
               </span>
-              <a href="tel:+911234567890" className="text-blue-100 text-sm hover:text-blue-300 transition-colors">
-                +91 12345 67890
+              <a href="tel:+918005586588" className="text-blue-100 text-sm hover:text-blue-300 transition-colors">
+                +91 80055 86588
               </a>
             </div>
             
@@ -148,7 +142,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter Subscription */}
+        2
           <div className="space-y-4">
             <h3 className="font-semibold text-white text-lg border-b border-blue-600 pb-2">Newsletter</h3>
             <p className="text-blue-100 text-sm">
@@ -185,7 +179,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Footer Bottom */}
+     
         <div className="border-t border-blue-700 mt-10 pt-6 text-center text-blue-200 text-xs relative z-10">
           <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <p>&copy; {new Date().getFullYear()} Oxygen Times. All rights reserved.</p>
@@ -218,7 +212,6 @@ export default function Footer() {
         `}</style>
       </footer>
 
-      {/* Subscription Success Popup */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
           <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowPopup(false)}></div>
