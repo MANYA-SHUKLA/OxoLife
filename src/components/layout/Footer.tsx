@@ -1,464 +1,375 @@
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaGithub } from "react-icons/fa";
-import { motion } from "framer-motion";
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  message?: string;
-}
+import React, { useState } from "react";
+import { 
+  FaFacebookF, 
+  FaTwitter, 
+  FaInstagram, 
+  FaLinkedinIn, 
+  FaYoutube,
+  FaPhoneAlt, 
+  FaEnvelope, 
+  FaMapMarkerAlt,
+  FaHeart,
+  FaPaperPlane
+} from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Footer = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [apiError, setApiError] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    
-    if (errors[name as keyof FormErrors]) {
-      const newErrors = { ...errors };
-      delete newErrors[name as keyof FormErrors];
-      setErrors(newErrors);
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.match(/^\S+@\S+\.\S+$/))
-      newErrors.email = "Enter a valid email";
-    if (!formData.message.trim()) newErrors.message = "Message is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    setApiError("");
-    setSuccessMessage("");
-
-    if (validateForm()) {
-      setIsSubmitting(true);
-      try {
-        const response = await fetch("https://ngo-model-backend.vercel.app/api/sendMessageRoute/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setSuccessMessage("🎉 Message sent successfully!");
-          setFormData({ name: "", email: "", message: "" });
-          setErrors({});
-          setTimeout(() => setSuccessMessage(""), 5000);
-        } else {
-          setApiError(data.message || "Failed to send message. Please try again.");
-        }
-      } catch (error) {
-        console.error("Error sending message:", error);
-        setApiError("Network error. Please check your connection.");
-      } finally {
-        setIsSubmitting(false);
-      }
+    if (email && email.includes("@")) {
+      setIsSubscribed(true);
+      setEmail("");
+      // Here you would typically send the email to your backend
+      setTimeout(() => setIsSubscribed(false), 3000);
+    } else {
+      setIsModalOpen(true);
+      setTimeout(() => setIsModalOpen(false), 3000);
     }
   };
 
-  const container = {
+  const socialLinks = [
+    { icon: <FaFacebookF />, href: "#", color: "hover:text-[#1877F2]" },
+    { icon: <FaTwitter />, href: "#", color: "hover:text-[#1DA1F2]" },
+    { icon: <FaInstagram />, href: "#", color: "hover:text-[#E4405F]" },
+    { icon: <FaLinkedinIn />, href: "#", color: "hover:text-[#0A66C2]" },
+    { icon: <FaYoutube />, href: "#", color: "hover:text-[#FF0000]" },
+  ];
+
+  const services = [
+    "Buy Medical Equipment",
+    "Rent Equipment",
+    "Lease Options",
+    "Nationwide Delivery",
+    "24/7 Customer Support"
+  ];
+
+  const quickLinks = [
+    "About Us",
+    "Our Services",
+    "Equipment Catalog",
+    "Blog",
+    "Contact Us",
+    "FAQ",
+    "Privacy Policy",
+    "Terms & Conditions"
+  ];
+
+  // Animation variants
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-      },
-    },
+        delayChildren: 0.3
+      }
+    }
   };
 
-  const item = {
+  const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
-      },
-    },
+        ease: "easeOut"
+      }
+    }
   };
 
   const hoverEffect = {
-    scale: 1.02,
-    transition: { duration: 0.3 },
-  };
-
-  const tapEffect = {
-    scale: 0.98,
+    scale: 1.05,
+    transition: { duration: 0.2 }
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-50 to-blue-50 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+    <>
+      {/* Subscription Success Modal */}
+      <AnimatePresence>
+        {isSubscribed && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg z-50 flex items-center"
+          >
+            <FaPaperPlane className="mr-2" />
+            <p>Thank you for subscribing to our newsletter!</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Error Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg z-50"
+          >
+            <p>Please enter a valid email address.</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <footer className="bg-[#155AA2] text-white relative overflow-hidden">
+        {/* Animated background elements */}
         <motion.div 
-          className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-blue-100 opacity-30"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, 0]
+          className="absolute top-10 left-10 w-20 h-20 rounded-full bg-[#57BADF] opacity-10"
+          animate={{
+            scale: [1, 1.2, 1],
           }}
-          transition={{ 
+          transition={{
             duration: 8,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
         <motion.div 
-          className="absolute -bottom-24 -right-24 w-72 h-72 rounded-full bg-blue-200 opacity-20"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            rotate: [0, -5, 0]
+          className="absolute bottom-10 right-10 w-24 h-24 rounded-full bg-[#C7501D] opacity-10"
+          animate={{
+            scale: [1.2, 1, 1.2],
           }}
-          transition={{ 
+          transition={{
             duration: 10,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
-      </div>
-      
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={container}
-          className="text-center mb-12"
-        >
-          <motion.h2
-            variants={item}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-3"
+        
+        {/* Main Footer Content */}
+        <div className="container mx-auto px-4 py-12 relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
-            Get In Touch
-          </motion.h2>
-          <motion.p
-            variants={item}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
-          >
-            Have a project in mind or want to collaborate? Drop me a message!
-          </motion.p>
-        </motion.div>
+            {/* Company Info */}
+            <motion.div variants={itemVariants} className="lg:col-span-1">
+              <motion.h3 
+                className="text-2xl font-bold mb-4"
+                whileHover={{ color: "#A98959" }}
+                transition={{ duration: 0.3 }}
+              >
+                Oxygen Times
+              </motion.h3>
+              <p className="mb-4 text-[#EFECED]">
+                Making advanced medical equipment accessible to everyone in India, bridging the gap between hospital care and home recovery.
+              </p>
+              <div className="flex space-x-4 mb-6">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    className="bg-white text-[#155AA2] p-2 rounded-full transition-all duration-300 hover:bg-[#C7501D] hover:text-white"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Form */}
+            {/* Services */}
+            <motion.div variants={itemVariants}>
+              <motion.h4 
+                className="text-lg font-semibold mb-4 border-b border-[#A98959] pb-2"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Our Services
+              </motion.h4>
+              <ul className="space-y-2">
+                {services.map((service, index) => (
+                  <motion.li 
+                    key={index} 
+                    className="hover:text-[#EFECED] transition-colors duration-300"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <a href="#">{service}</a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Quick Links */}
+            <motion.div variants={itemVariants}>
+              <motion.h4 
+                className="text-lg font-semibold mb-4 border-b border-[#A98959] pb-2"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Quick Links
+              </motion.h4>
+              <ul className="space-y-2">
+                {quickLinks.map((link, index) => (
+                  <motion.li 
+                    key={index} 
+                    className="hover:text-[#EFECED] transition-colors duration-300"
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <a href="#">{link}</a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Contact & Newsletter */}
+            <motion.div variants={itemVariants}>
+              <motion.h4 
+                className="text-lg font-semibold mb-4 border-b border-[#A98959] pb-2"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Contact Info
+              </motion.h4>
+              <div className="mb-6">
+                <motion.div 
+                  className="flex items-start mb-3"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <FaMapMarkerAlt className="mt-1 mr-3 text-[#A98959]" />
+                  <p>123 Healthcare Street, New Delhi, India</p>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center mb-3"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <FaPhoneAlt className="mr-3 text-[#A98959]" />
+                  <a href="tel:+911234567890" className="hover:text-[#EFECED] transition-colors duration-300">+91 12345 67890</a>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <FaEnvelope className="mr-3 text-[#A98959]" />
+                  <a href="mailto:support@oxygentimes.com" className="hover:text-[#EFECED] transition-colors duration-300">support@oxygentimes.com</a>
+                </motion.div>
+              </div>
+
+              <motion.h4 
+                className="text-lg font-semibold mb-4 border-b border-[#A98959] pb-2"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Newsletter
+              </motion.h4>
+              <p className="mb-3 text-[#EFECED]">Subscribe to get updates on new products and promotions</p>
+              <form onSubmit={handleSubscribe} className="flex flex-col space-y-3">
+                <motion.input
+                  type="email"
+                  placeholder="Your email address"
+                  className="px-4 py-2 rounded text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#C7501D]"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  whileFocus={{ scale: 1.02 }}
+                />
+                <motion.button
+                  type="submit"
+                  className="bg-[#C7501D] text-white py-2 px-4 rounded font-medium transition-colors duration-300 hover:bg-[#A98959] flex items-center justify-center"
+                  whileHover={{ scale: 1.02, boxShadow: "0px 5px 15px rgba(0,0,0,0.1)" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Subscribe <FaPaperPlane className="ml-2" />
+                </motion.button>
+              </form>
+            </motion.div>
+          </motion.div>
+
+          {/* Map Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100"
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-12 rounded-xl overflow-hidden shadow-xl border-2 border-[#A98959]"
           >
-            <div className="p-6 sm:p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-5 flex items-center">
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 10, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <FaPaperPlane className="text-blue-500 mr-3" />
-                </motion.div>
-                Send Me a Message
-              </h3>
-              
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <motion.div 
-                  variants={item}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2.5 rounded-lg border ${errors.name ? "border-red-500 ring-1 ring-red-500" : "border-gray-300 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
-                    placeholder="John Doe"
-                  />
-                  {errors.name && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-600"
-                    >
-                      {errors.name}
-                    </motion.p>
-                  )}
-                </motion.div>
-
-                <motion.div 
-                  variants={item}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2.5 rounded-lg border ${errors.email ? "border-red-500 ring-1 ring-red-500" : "border-gray-300 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
-                    placeholder="john@example.com"
-                  />
-                  {errors.email && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-600"
-                    >
-                      {errors.email}
-                    </motion.p>
-                  )}
-                </motion.div>
-
-                <motion.div 
-                  variants={item}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    value={formData.message}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-2.5 rounded-lg border ${errors.message ? "border-red-500 ring-1 ring-red-500" : "border-gray-300 focus:border-blue-500"} focus:ring-2 focus:ring-blue-500 focus:border-transparent transition`}
-                    placeholder="Hello, I'd like to talk about..."
-                  ></textarea>
-                  {errors.message && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-1 text-sm text-red-600"
-                    >
-                      {errors.message}
-                    </motion.p>
-                  )}
-                </motion.div>
-
-                <motion.div 
-                  variants={item}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <motion.button
-                    type="submit"
-                    whileHover={hoverEffect}
-                    whileTap={tapEffect}
-                    disabled={isSubmitting}
-                    className={`w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending...
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center">
-                        Send Message <FaPaperPlane className="ml-2 text-sm" />
-                      </span>
-                    )}
-                  </motion.button>
-                </motion.div>
-
-                {successMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 bg-green-100 text-green-700 rounded-lg text-center border border-green-200"
-                  >
-                    {successMessage}
-                  </motion.div>
-                )}
-
-                {apiError && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-3 bg-red-100 text-red-700 rounded-lg text-center border border-red-200"
-                  >
-                    {apiError}
-                  </motion.div>
-                )}
-              </form>
-            </div>
-          </motion.div>
-
-          {/* Contact Information and Map */}
-          <div className="space-y-6">
-            {/* Map */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="h-56 sm:h-64 rounded-xl shadow-lg overflow-hidden border border-gray-200"
-              whileHover={{ scale: 1.01 }}
-            >
+            <div className="h-64 md:h-80 w-full">
               <iframe
-                title="Office Location"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14046.92945687822!2d77.1653805!3d28.546195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1dec15d2acfb%3A0x44144b13d050b48e!2sDAMODAR%20HOSTEL%20BLOCK-A%2C%20JAWAHARLAL%20NEHRU%20UNIVERSITY-2%2C%20Old%20SPS%20Rd%2C%20Delhi%2C%20New%20Delhi%2C%20Delhi%20110048%2C%20India!5e0!3m2!1sen!2sus!4v1712345678901!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
-                allowFullScreen={true}
+                style={{ border: 0 }}
+                allowFullScreen
                 loading="lazy"
-                className="rounded-xl"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Oxygen Times Location"
               ></iframe>
-            </motion.div>
-
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-white p-6 rounded-xl shadow-lg border border-gray-100"
-            >
-              <h3 className="text-xl font-bold text-gray-900 mb-5 flex items-center">
-                <motion.div
-                  animate={{ 
-                    rotate: [0, 360],
-                  }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                >
-                  <FaMapMarkerAlt className="text-blue-500 mr-3" />
-                </motion.div>
-                Contact Information
-              </h3>
-
-              <div className="space-y-4">
-                <motion.div 
-                  className="flex items-start"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <FaMapMarkerAlt className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-medium text-gray-900">Address</h4>
-                    <p className="text-gray-600">Damodar Hostel, JNU, New Delhi, India (110067)</p>
-                  </div>
-                </motion.div>
-
-                <motion.div 
-                  className="flex items-start"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <FaEnvelope className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-medium text-gray-900">Email</h4>
-                    <div className="text-gray-600">
-                      <a href="mailto:work.shuklamanya@gmail.com" className="block hover:text-blue-600 transition">
-                        work.shuklamanya@gmail.com
-                      </a>
-                      <a href="mailto:shuklamanya99@gmail.com" className="block hover:text-blue-600 transition">
-                        shuklamanya99@gmail.com
-                      </a>
-                      <a href="mailto:manyas36_soe@jnu.ac.in" className="block hover:text-blue-600 transition">
-                        manyas36_soe@jnu.ac.in
-                      </a>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div 
-                  className="flex items-start"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <FaPhoneAlt className="text-blue-500 mt-1 mr-4 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-medium text-gray-900">Phone</h4>
-                    <a href="tel:+918005586588" className="text-gray-600 hover:text-blue-600 transition">
-                      +91 8005586588
-                    </a>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Social Media Links */}
-              <div className="mt-6 pt-5 border-t border-gray-100">
-                <h4 className="font-medium text-gray-900 mb-3">Connect With Me</h4>
-                <div className="flex space-x-4">
-                  {[
-                    { icon: <FaLinkedin size={18} />, color: "hover:text-blue-700", href: "https://www.linkedin.com/in/manya-shukla99/" },
-                    { icon: <FaGithub size={18} />, color: "hover:text-gray-800", href: "https://github.com/MANYA-SHUKLA" },
-                  ].map((social, index) => (
-                    <motion.a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`text-gray-600 ${social.color} bg-gray-100 p-2.5 rounded-full transition-all duration-300`}
-                      whileHover={{ y: -3, scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {social.icon}
-                    </motion.a>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            </div>
+            <div className="bg-[#0f4a87] p-4 text-center">
+              <p className="flex items-center justify-center">
+                <FaMapMarkerAlt className="mr-2 text-[#A98959]" />
+                <span>Damodar Hostel, JNU, New Delhi, India (110067)</span>
+              </p>
+            </div>
+          </motion.div>
         </div>
-        
-        {/* Footer Note */}
+
+        {/* Copyright Bar */}
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 text-center text-sm text-gray-500 border-t border-gray-200 pt-6"
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="bg-[#0f4a87] py-4 relative z-10"
         >
-          Made with ❤️ by MANYA SHUKLA
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-sm text-[#EFECED]">
+                © {new Date().getFullYear()} Oxygen Times. All rights reserved.
+              </p>
+              <motion.div 
+                className="flex items-center mt-2 md:mt-0"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="text-sm mr-2">Made with</span>
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <FaHeart className="text-red-500 mx-1" />
+                </motion.span>
+                <span className="text-sm ml-2">by Manya Shukla</span>
+              </motion.div>
+              <div className="flex space-x-4 mt-2 md:mt-0">
+                <motion.a 
+                  href="#" 
+                  className="text-sm text-[#EFECED] hover:text-[#C7501D] transition-colors duration-300"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Privacy Policy
+                </motion.a>
+                <motion.a 
+                  href="#" 
+                  className="text-sm text-[#EFECED] hover:text-[#C7501D] transition-colors duration-300"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Terms of Service
+                </motion.a>
+              </div>
+            </div>
+          </div>
         </motion.div>
-      </div>
-    </div>
+      </footer>
+    </>
   );
 };
 
