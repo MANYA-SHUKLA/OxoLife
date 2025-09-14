@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { FaLinkedin, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaPaperPlane, FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
